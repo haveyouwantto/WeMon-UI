@@ -24,9 +24,12 @@ fetch('api/layout').then(r => { if (r.ok) return r.json() }).then(layout => {
     socket.on('sensor_data', function (data) {
         const timestamp = new Date(data.time * 1000);
 
-        data.values.forEach((element, index) => {
-           dataRecorders[index].addData([timestamp, element.value]);
-        });
+        for (const key in data.values) {
+            const value = data.values[key].value;
+            dataRecorders[layout.indexOf(key)].setPrecision(data.values[key].precision)
+            dataRecorders[layout.indexOf(key)].addData([timestamp, value]);
+            console.log(`${key}: ${value}`);
+        }
     });
 
 

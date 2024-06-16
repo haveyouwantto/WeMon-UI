@@ -23,4 +23,12 @@ export default class DataRecorder {
         this.display.setValue(newData[newData.length - 1][1])
         this.display.update();
     }
+
+    setPrecision(precision) {
+        this.display.precision = precision;
+    }
+
+    getPrecision() {
+        return this.display.precision;
+    }
 }

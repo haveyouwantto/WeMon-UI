@@ -203,9 +203,12 @@ export default class Display {
     }
 
     setValue(value) {
-        let parts = value.toFixed(this.unit.precision).split('.')
+        let parts = value.toFixed(this.precision).split('.')
         this.intPart.innerText = parts[0];
-        this.decimalPart.innerText = '.' + parts[1]
+        if(parts.length <= 1)
+            this.decimalPart.innerText = '';
+        else
+            this.decimalPart.innerText = '.' + parts[1];
     }
 
     get data() {
