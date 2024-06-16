@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Real-Time Sensor Data</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+</head>
+
+<body>
+    <h1 class="title">WeMon</h1>
+    <div id="content">
+        <span>每30秒自动更新一次</span>
+        <select id="timeScale" class="selector">
+            <option value="120">过去2小时</option>
+            <option value="360">过去6小时</option>
+            <option value="1440">过去24小时</option>
+            <option value="10080">过去7天</option>
+            <option value="302400">过去一月</option>
+        </select>
+        <div id="graphs"></div>
+    </div>
+</body>
+
+</html>
