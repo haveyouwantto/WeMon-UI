@@ -46,7 +46,9 @@ html {
 } */
 
 #graphs {
-    display: grid;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
 }
 
 .graph-container {
@@ -60,9 +62,7 @@ html {
     height: 40vh;
 }
 
-@media screen and (min-width:768px) {
-    #content {
-        width: 50%;
-        margin: auto;
-    }
+.display {
+    width: calc(600px + 5vw);
+    max-width: 100%;
 }

@@ -42,6 +42,7 @@ const gridColor = "rgb(128,128,128)";
 export default class Display {
     constructor() {
         this.root = document.createElement('div');
+        this.root.classList.add('display');
         this.graph = document.createElement('div');
         this.graph.classList.add('graph')
         this.canvas = document.createElement('div');
