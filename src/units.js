@@ -1,23 +1,19 @@
 const units = {
     temperature: {
         name: "温度",
-        unit: "°C",
-        precision: 2
+        unit: "°C"
     },
     pressure: {
         name: "气压",
-        unit: "hPa",
-        precision: 2
+        unit: "hPa"
     },
     humidity: {
         name: "湿度",
-        unit: "%RH",
-        precision: 1
+        unit: "%RH"
     },
     airQuality: {
         name: "空气质量",
-        unit: "IAQ",
-        precision: 1
+        unit: "IAQ"
     }
 };
 

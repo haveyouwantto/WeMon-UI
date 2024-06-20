@@ -1,19 +1,21 @@
 ﻿import { io } from "socket.io-client";
 import "../resources/style.css"
-import Display from "./display";
 import DataRecorder from "./data-record";
 
 
 const content = document.getElementById('graphs');
-const dataRecorders = [];
+const dataRecorders = {};
 
-fetch('api/layout').then(r => { if (r.ok) return r.json() }).then(layout => {
-    layout.forEach(element => {
-        const dataRecorder = new DataRecorder("1", element, [])
+fetch('api/last').then(r => { if (r.ok) return r.json() }).then(layout => {
+
+    for (const unit in layout.values) {
+        const element = layout.values[unit];
+        const dataRecorder = new DataRecorder("1", unit, [])
+        dataRecorder.display.precision = element.precision;
+        dataRecorder.display.setValue(element.value);
         content.appendChild(dataRecorder.display.root);
-        dataRecorders.push(dataRecorder)
-    });
-
+        dataRecorders[unit] = dataRecorder;
+    }
 
     var socket = io.connect('/sensor');
 
@@ -21,13 +23,14 @@ fetch('api/layout').then(r => { if (r.ok) return r.json() }).then(layout => {
         console.log('Connected to the WebSocket server');
     });
 
+    // on data from the server
     socket.on('sensor_data', function (data) {
         const timestamp = new Date(data.time * 1000);
 
         for (const key in data.values) {
             const value = data.values[key].value;
-            dataRecorders[layout.indexOf(key)].setPrecision(data.values[key].precision)
-            dataRecorders[layout.indexOf(key)].addData([timestamp, value]);
+            dataRecorders[key].setPrecision(data.values[key].precision)
+            dataRecorders[key].addData([timestamp, value]);
             console.log(`${key}: ${value}`);
         }
     });
@@ -37,11 +40,12 @@ fetch('api/layout').then(r => { if (r.ok) return r.json() }).then(layout => {
         fetch('/api/past/' + duration).then(r => {
             if (r.ok) return r.json();
         }).then(pastData => {
-            const x = pastData.data.map(e => new Date(e[0] * 1000));
+            const x = pastData.data.timestamp.map(e => e * 1000); // convert to milliseconds
 
-            for (let index = 0; index < pastData.data.length - 2; index++) {
-                dataRecorders[index].setData(pastData.data.map((e, i) => {
-                    if(e[index + 1]) return[x[i], e[index + 1]]}))
+            for (const key in dataRecorders) {
+                dataRecorders[key].setData(x.map((e, i) => {
+                    return [e, pastData.data[key][i]] // pack the data into an array of [timestamp, value] pairs
+                }))
             }
         })
     }

@@ -77,7 +77,7 @@ export default class Display {
         var options = {
             tooltip: {
                 trigger: 'axis',
-                valueFormatter: v => v.toFixed(this.precision),
+                valueFormatter: v => v && v.toFixed(this.precision),
             },
             toolbox: {
                 feature: {
@@ -162,7 +162,7 @@ export default class Display {
                             ]],
                         label:
                         {
-                            formatter: v => v.value.toFixed(2),
+                            formatter: v => v && v.value.toFixed(this.precision),
                             color: "#ffffff"
                         }
                     }
